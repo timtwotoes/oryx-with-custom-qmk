@@ -1,7 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
 #include "i18n.h"
-#include "keymap_danish.h"
 #define MOON_LED_LEVEL LED_LEVEL
 #ifndef ZSA_SAFE_RANGE
 #define ZSA_SAFE_RANGE SAFE_RANGE
@@ -213,10 +212,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, LT(1,KC_BSPC), KC_DELETE);
 
 // Shift + esc = ~
-const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, LT(2, KC_ESCAPE), DK_TILD);
+const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, LT(2, KC_ESCAPE), A(DK_DIAE));
 
 // GUI + esc = `
-const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, LT(2, KC_ESCAPE), DK_GRV);
+const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, LT(2, KC_ESCAPE), S(DK_ACUT));
 
 // Ctrl + esc = ´
 const key_override_t acute_esc_override = ko_make_basic(MOD_MASK_CTRL, LT(2, KC_ESCAPE), DK_ACUT);
