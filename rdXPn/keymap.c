@@ -212,10 +212,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, LT(1,KC_BSPC), KC_DELETE);
 
 // Shift + esc = ~
-const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_GUI, LT(2, KC_ESCAPE), S(KC_GRV));
+const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_GUI, LT(2, KC_ESCAPE), DK_TILD);
 
 // GUI + esc = `
-const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, LT(2, KC_ESCAPE), KC_GRV);
+const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, LT(2, KC_ESCAPE), DK_GRV);
 
 const key_override_t *key_overrides[] = {
   &delete_key_override,
