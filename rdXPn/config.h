@@ -9,3 +9,6 @@
 
 #define RGB_MATRIX_STARTUP_SPD 60
 
+// Custom configuration
+#define VOYAGER_USER_LEDS
+#define CAPS_WORD_IDLE_TIMEOUT 0
