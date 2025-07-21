@@ -212,8 +212,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, LT(1,KC_BSPC), KC_DELETE);
 
 const key_override_t **key_overrides = (const key_override_t *[]) {
-  &delete_key_override,
-  NULL
+  &delete_key_override
 };
 
 
