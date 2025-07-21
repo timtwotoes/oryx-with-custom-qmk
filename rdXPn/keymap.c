@@ -220,15 +220,11 @@ const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, LT(2, KC_E
 // Ctrl + esc = ´
 const key_override_t acute_esc_override = ko_make_basic(MOD_MASK_CTRL, LT(2, KC_ESCAPE), DK_ACUT);
 
-// Ctrl + backspace = repeat key
-const key_override_t repeat_key_override = ko_make_basic(MOD_MASK_CTRL, KC_BSPC, QK_REPEAT_KEY);
-
 const key_override_t *key_overrides[] = {
   &delete_key_override,
   &tilde_esc_override,
   &grave_esc_override,
-  &acute_esc_override,
-  &repeat_key_override
+  &acute_esc_override
 };
 
 
