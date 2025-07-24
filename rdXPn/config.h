@@ -1,4 +1,4 @@
-#define FLOW_TAP_TERM 100
+#define FLOW_TAP_TERM 150
 #define CHORDAL_HOLD
 #undef TAPPING_TERM
 #define TAPPING_TERM 190
@@ -7,7 +7,7 @@
 
 #define USB_SUSPEND_WAKEUP_DELAY 0
 #define CAPS_LOCK_STATUS
-#define SERIAL_NUMBER "rdXPn/5W56nq"
+#define SERIAL_NUMBER "rdXPn/gaqlzN"
 #define LAYER_STATE_8BIT
 
 #define RGB_MATRIX_STARTUP_SPD 60
