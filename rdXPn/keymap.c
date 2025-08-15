@@ -218,6 +218,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
+// Chordal Hold
+bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
+                      uint16_t other_keycode, keyrecord_t* other_record) {
+// When a modifier on the left hand side is active, settle all right hand modifiers as tapped
+// and vice versa.
+  if (get_mods() != 0) {
+    if (get_mods() & MOD_BIT(KC_LCTL) ||
+        get_mods() & MOD_BIT(KC_LSFT) ||
+        get_mods() & MOD_BIT(KC_LALT) ||
+        get_mods() & MOD_BIT(KC_LGUI)) {
+      switch(tap_hold_keycode) {
+        case MT(MOD_RSFT, KC_J):
+        case MT(MOD_RCTL, KC_K):
+        case MT(MOD_RALT, KC_L):
+        case MT(MOD_RGUI, DK_AE):
+          return false;
+      }
+    }
+
+    if (get_mods() & MOD_BIT(KC_RCTL) ||
+        get_mods() & MOD_BIT(KC_RSFT) ||
+        get_mods() & MOD_BIT(KC_RALT) ||
+        get_mods() & MOD_BIT(KC_RGUI)) {
+      switch(tap_hold_keycode) {
+        case MT(MOD_LSFT, KC_F):
+        case MT(MOD_LCTL, KC_D):
+        case MT(MOD_LALT, KC_S):
+        case MT(MOD_LGUI, DK_A):
+          return false;
+      }
+    }
+  }
+  
+  return get_chordal_hold_default(tap_hold_record, other_record);
+}
 
 // Key Overrides
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, LT(1,KC_BSPC), KC_DELETE);
