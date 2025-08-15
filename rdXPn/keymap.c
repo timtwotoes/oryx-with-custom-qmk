@@ -245,7 +245,7 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
         case MT(MOD_LSFT, KC_F):
         case MT(MOD_LCTL, KC_D):
         case MT(MOD_LALT, KC_S):
-        case MT(MOD_LGUI, DK_A):
+        case MT(MOD_LGUI, KC_A):
           return false;
       }
     }
