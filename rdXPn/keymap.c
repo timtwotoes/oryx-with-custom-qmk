@@ -315,28 +315,6 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_RSFT:
       return true;
 
-    case LSFT(KC_1):
-    case LSFT(KC_2):
-    case LSFT(KC_3):
-    case LSFT(KC_4):
-    case LSFT(KC_5):
-    case LSFT(KC_6):
-    case LSFT(KC_7):
-    case LSFT(KC_8):
-    case LSFT(KC_9):
-    case LSFT(KC_0):
-    case RSFT(KC_1):
-    case RSFT(KC_2):
-    case RSFT(KC_3):
-    case RSFT(KC_4):
-    case RSFT(KC_5):
-    case RSFT(KC_6):
-    case RSFT(KC_7):
-    case RSFT(KC_8):
-    case RSFT(KC_9):
-    case RSFT(KC_0):
-      return false;
-
     default:
       return false;  // Deactivate Caps Word.
   }
