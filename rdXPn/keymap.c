@@ -218,6 +218,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
+// Flow Tap
+bool is_flow_tap_key(uint16_t keycode) {
+    switch (get_tap_keycode(keycode)) {
+        case KC_SPC:
+        case KC_A ... KC_Z:
+        case DK_AE:
+        case DK_OSTR: // ø
+        case DK_ARNG: // å
+        case DK_MINS: // This is minus and dash
+        case KC_DOT:
+        case KC_COMM:
+        case KC_SCLN:
+        case KC_SLSH:
+            return true;
+    }
+    return false;
+}
+
+
 // Chordal Hold
 bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
                       uint16_t other_keycode, keyrecord_t* other_record) {
