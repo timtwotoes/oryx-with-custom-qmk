@@ -229,8 +229,6 @@ bool is_flow_tap_key(uint16_t keycode) {
         case DK_MINS: // This is minus and dash
         case KC_DOT:
         case KC_COMM:
-        case KC_SCLN:
-        case KC_SLSH:
             return true;
     }
     return false;
