@@ -12,3 +12,4 @@
 // Custom configuration
 #define VOYAGER_USER_LEDS
 #define CAPS_WORD_IDLE_TIMEOUT 0
+#define CAPS_WORD_INVERT_ON_SHIFT

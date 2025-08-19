@@ -292,7 +292,7 @@ const key_override_t *key_overrides[] = {
 
 
 bool caps_word_press_user(uint16_t keycode) {
-  const bool shift_pressed = get_mods() & MOD_MASK_SHIFT;
+//  const bool shift_pressed = get_mods() & MOD_MASK_SHIFT;
 
   switch (keycode) {  
     // Keycodes that continue Caps Word
@@ -300,14 +300,12 @@ bool caps_word_press_user(uint16_t keycode) {
     case DK_AE: // æ
     case DK_OSTR: // ø
     case DK_ARNG: // å
+    case DK_MINS: // This is minus and dash
       add_weak_mods(MOD_BIT(KC_LSFT));
       return true;
 
-    case DK_MINS: // This is minus and dash
-      return true;
-
     case KC_1 ... KC_0:
-      return shift_pressed == false;
+ //     return shift_pressed == false;
 
     case KC_BSPC:
     case KC_DEL:
