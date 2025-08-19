@@ -300,8 +300,10 @@ bool caps_word_press_user(uint16_t keycode) {
     case DK_AE: // æ
     case DK_OSTR: // ø
     case DK_ARNG: // å
-    case DK_MINS: // This is minus and dash
       add_weak_mods(MOD_BIT(KC_LSFT));
+      return true;
+
+    case DK_MINS: // This is minus and dash
       return true;
 
     case KC_1 ... KC_0:
