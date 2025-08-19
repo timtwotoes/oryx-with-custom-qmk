@@ -63,6 +63,9 @@ static uint8_t led_blink_state[NUM_LEDS] = {0};
 // Track caps lock
 static bool is_caps_lock_on = false;
 
+// Track shift
+static bool is_shift_held = false;
+
 static void update_caps_indicator(void) {
     if (is_caps_lock_on) {
         led_blink_state[3] = LED_ON;
@@ -165,6 +168,11 @@ bool rgb_matrix_indicators_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case MT(MOD_LSFT, KC_F): 
+    case MT(MOD_RSFT, KC_J):
+        is_shift_held = record->event.pressed;
+        return true;
+
     case LT(2, KC_ESCAPE):
         if (record->tap.count > 0 && is_caps_word_on()) {
             if (!record->event.pressed) {
@@ -305,6 +313,7 @@ bool caps_word_press_user(uint16_t keycode) {
       return true;
 
     case KC_1 ... KC_0:
+      return is_shift_held == false;
  //     return shift_pressed == false;
 
     case KC_BSPC:
