@@ -329,11 +329,17 @@ bool caps_word_press_user(uint16_t keycode) {
   }
 }
 
-#ifdef VOYAGER_USER_LEDS
 void caps_word_set_user(bool active) {
+#ifdef VOYAGER_USER_LEDS
     update_caps_indicator();
+#endif
+   
+   if (active && host_keyboard_led_state().caps_lock) {
+      tap_code(KC_CAPS);
+   }
 }
 
+#ifdef VOYAGER_USER_LEDS
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t layer = get_highest_layer(state);
 
