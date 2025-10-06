@@ -228,7 +228,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
-<<<<<<< HEAD
 
 // Flow Tap
 bool is_flow_tap_key(uint16_t keycode) {
