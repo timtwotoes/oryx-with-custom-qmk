@@ -354,8 +354,8 @@ void caps_word_set_user(bool active) {
    }
 }
 
-#ifdef VOYAGER_USER_LEDS
 layer_state_t layer_state_set_user(layer_state_t state) {
+#ifdef VOYAGER_USER_LEDS
     uint8_t layer = get_highest_layer(state);
 
 //    STATUS_LED_1(layer & (1<<0));
@@ -368,6 +368,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 //    STATUS_LED_4(layer & (1<<3));
     update_caps_indicator();
 #   endif
-    return state;
-}
 #endif
+    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
