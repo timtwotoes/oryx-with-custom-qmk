@@ -369,5 +369,5 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     update_caps_indicator();
 #   endif
 #endif
-    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+    return update_tri_layer_state(state, LT(1, KC_BSPC), LT(2, KC_ESCAPE), MO(3));
 }
