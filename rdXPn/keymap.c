@@ -102,6 +102,25 @@ RGB hsv_to_rgb_with_value(HSV hsv) {
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
+
+#ifdef VOYAGER_USER_LEDS
+  uint32_t led_blink_callback(uint32_t trigger_time, void* cb_arg) {
+    static const uint8_t pattern[4] = {0x00, 0xff, 0x0f, 0xaa};
+    static uint8_t phase = 0;
+    phase = (phase + 1) % 8;
+
+    uint8_t bit = 1 << phase;
+
+    STATUS_LED_1((pattern[led_blink_state[0]] & bit) != 0);
+    STATUS_LED_2((pattern[led_blink_state[1]] & bit) != 0);
+    STATUS_LED_3((pattern[led_blink_state[2]] & bit) != 0);
+    STATUS_LED_4((pattern[led_blink_state[3]] & bit) != 0);
+
+    return LED_BLINK_FAST_PERIOD_MS / 2;
+  }
+
+  defer_exec(1, led_blink_callback, NULL);
+#endif
 }
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
