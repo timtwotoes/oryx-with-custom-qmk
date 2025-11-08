@@ -148,34 +148,34 @@ void set_layer_color(int layer) {
   }
 }
 
-bool rgb_matrix_indicators_user(void) {
-  if (rawhid_state.rgb_control) {
-      return false;
-  }
-  if (!keyboard_config.disable_layer_led) { 
-    switch (biton32(layer_state)) {
-      case 1:
-        set_layer_color(1);
-        break;
-      case 2:
-        set_layer_color(2);
-        break;
-      case 3:
-        set_layer_color(3);
-        break;
-     default:
-        if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
-          rgb_matrix_set_color_all(0, 0, 0);
-        }
-    }
-  } else {
-    if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
-      rgb_matrix_set_color_all(0, 0, 0);
-    }
-  }
-
-  return true;
-}
+//bool rgb_matrix_indicators_user(void) {
+//  if (rawhid_state.rgb_control) {
+//      return false;
+//  }
+//  if (!keyboard_config.disable_layer_led) { 
+//    switch (biton32(layer_state)) {
+//      case 1:
+//        set_layer_color(1);
+//        break;
+//      case 2:
+//        set_layer_color(2);
+//        break;
+//      case 3:
+//        set_layer_color(3);
+//        break;
+//     default:
+//        if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
+//          rgb_matrix_set_color_all(0, 0, 0);
+//        }
+//    }
+//  } else {
+//    if (rgb_matrix_get_flags() == LED_FLAG_NONE) {
+//      rgb_matrix_set_color_all(0, 0, 0);
+//    }
+//  }
+//
+//  return true;
+//}
 
 
 
