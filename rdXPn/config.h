@@ -4,7 +4,7 @@
 
 #define USB_SUSPEND_WAKEUP_DELAY 0
 #define CAPS_LOCK_STATUS
-#define SERIAL_NUMBER "rdXPn/wO3GOP"
+#define SERIAL_NUMBER "rdXPn/Dzw5zb"
 #define LAYER_STATE_8BIT
 #define HCS(report) host_consumer_send(record->event.pressed ? report : 0); return false
 
