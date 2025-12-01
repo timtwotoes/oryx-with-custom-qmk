@@ -53,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,          KC_NO,          KC_NO,          KC_F14,         KC_AUDIO_VOL_DOWN,KC_NO,                                          KC_AUDIO_MUTE,  KC_AUDIO_VOL_UP,KC_F15,         KC_NO,          KC_NO,          KC_NO,          
                                                     KC_NO,          KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO
   )
-;
+};
 
 const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
   'L', 'L', 'L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 
