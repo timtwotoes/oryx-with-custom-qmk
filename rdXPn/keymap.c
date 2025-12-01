@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                     KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
   ),
   [3] = LAYOUT_voyager(
-    KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          
+    DF(0),          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          DF(4),          
     KC_NO,          KC_NO,          KC_NO,          KC_NO,          DK_MINS,        KC_NO,                                          KC_SYSTEM_SLEEP,DK_PLUS,        KC_NO,          KC_NO,          KC_NO,          KC_NO,          
     KC_NO,          KC_LEFT_GUI,    KC_LEFT_ALT,    KC_LEFT_CTRL,   KC_LEFT_SHIFT,  KC_NO,                                          MAC_LOCK,       KC_RIGHT_SHIFT, KC_RIGHT_CTRL,  KC_RIGHT_ALT,   KC_RIGHT_GUI,   KC_NO,          
     KC_NO,          KC_NO,          KC_NO,          KC_F14,         KC_AUDIO_VOL_DOWN,KC_NO,                                          KC_AUDIO_MUTE,  KC_AUDIO_VOL_UP,KC_F15,         KC_NO,          KC_NO,          KC_NO,          
@@ -51,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,         KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                           KC_J,           KC_L,           KC_U,           KC_Y,           DK_AE,          DK_ARNG,        
     DK_PLUS,        KC_A,           KC_R,           KC_S,           KC_T,           KC_G,                                           KC_M,           KC_N,           KC_E,           KC_I,           KC_O,           DK_OSTR,        
     DK_LABK,        KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,                                           KC_K,           KC_H,           KC_COMMA,       KC_DOT,         DK_MINS,        DK_QUOT,        
-                                                    KC_ENTER,       KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_SPACE
+                                                    KC_ENTER,       LT(1, KC_BSPC),                                 LT(2, KC_ESCAPE), KC_SPACE
   ),
 };
 
