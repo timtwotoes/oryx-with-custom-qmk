@@ -65,12 +65,6 @@ const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
 
 
 
-bool capslock_active = false;
-
-bool led_update_user(led_t led_state) {
-  capslock_active = led_state.caps_lock;
-  return true;
-}
 
 extern rgb_config_t rgb_matrix_config;
 
@@ -135,10 +129,6 @@ bool rgb_matrix_indicators_user(void) {
     }
   }
 
-  if (capslock_active && biton32(layer_state) == 2) {
-    RGB rgb = hsv_to_rgb_with_value((HSV) { 69, 255, 255 });
-    rgb_matrix_set_color( 24, rgb.r, rgb.g, rgb.b );
-  } 
   return true;
 }
 
