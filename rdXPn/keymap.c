@@ -182,10 +182,6 @@ bool rgb_matrix_indicators_user(void) {
     }
   }
 
-  if (capslock_active && biton32(layer_state) == 2) {
-    RGB rgb = hsv_to_rgb_with_value((HSV) { 69, 255, 255 });
-    rgb_matrix_set_color( 24, rgb.r, rgb.g, rgb.b );
-  } 
   return true;
 }
 
