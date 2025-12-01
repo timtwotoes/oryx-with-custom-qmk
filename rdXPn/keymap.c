@@ -30,7 +30,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,         KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                           KC_J,           KC_L,           KC_U,           KC_Y,           DK_AE,          DK_ARNG,        
     DK_PLUS,        MT(MOD_LGUI, KC_A),MT(MOD_LALT, KC_R),MT(MOD_LCTL, KC_S),MT(MOD_LSFT, KC_T),KC_G,                                           KC_M,           MT(MOD_RSFT, KC_N),MT(MOD_RCTL, KC_E),MT(MOD_RALT, KC_I),MT(MOD_RGUI, KC_O),DK_OSTR,        
     DK_LABK,        KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,                                           KC_K,           KC_H,           KC_COMMA,       KC_DOT,         DK_MINS,        DK_QUOT,        
-                                                    KC_ENTER,       KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_SPACE
+                                                    KC_ENTER,       LT(2, KC_BSPC),                                 LT(3, KC_ESCAPE),KC_SPACE
   ),
   [2] = LAYOUT_voyager(
     KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_F6,                                          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         
@@ -46,21 +46,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,          KC_NO,          KC_NO,          HSV_0_255_255,  HSV_74_255_255, HSV_169_255_255,                                KC_NO,          LCTL(LSFT(KC_TAB)),LCTL(KC_TAB),   KC_NO,          KC_NO,          KC_NO,          
                                                     KC_CAPS,        KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
   ),
-  [3] = LAYOUT_voyager(
-    DF(0),          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          DF(4),          
+  [4] = LAYOUT_voyager(
+    DF(0),          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          DF(1),          
     KC_NO,          KC_NO,          KC_NO,          KC_NO,          DK_MINS,        KC_NO,                                          KC_SYSTEM_SLEEP,DK_PLUS,        KC_NO,          KC_NO,          KC_NO,          KC_NO,          
     KC_NO,          KC_LEFT_GUI,    KC_LEFT_ALT,    KC_LEFT_CTRL,   KC_LEFT_SHIFT,  KC_NO,                                          MAC_LOCK,       KC_RIGHT_SHIFT, KC_RIGHT_CTRL,  KC_RIGHT_ALT,   KC_RIGHT_GUI,   KC_NO,          
     KC_NO,          KC_NO,          KC_NO,          KC_F14,         KC_AUDIO_VOL_DOWN,KC_NO,                                          KC_AUDIO_MUTE,  KC_AUDIO_VOL_UP,KC_F15,         KC_NO,          KC_NO,          KC_NO,          
                                                     KC_NO,          KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_NO
   ),
-  [4] = LAYOUT_voyager(
-    DK_DIAE,        KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           DK_ACUT,        
-    KC_TAB,         KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                           KC_J,           KC_L,           KC_U,           KC_Y,           DK_AE,          DK_ARNG,        
-    DK_PLUS,        MT(MOD_LGUI, KC_A),MT(MOD_LALT, KC_R),MT(MOD_LCTL, KC_S),MT(MOD_LSFT, KC_T),KC_G,                                           KC_M,           MT(MOD_RSFT, KC_N),MT(MOD_RCTL, KC_E),MT(MOD_RALT, KC_I),MT(MOD_RGUI, KC_O),DK_OSTR,        
-    DK_LABK,        KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,                                           KC_K,           KC_H,           KC_COMMA,       KC_DOT,         DK_MINS,        DK_QUOT,        
-                                                    KC_ENTER,       LT(1, KC_BSPC),                                 LT(2, KC_ESCAPE), KC_SPACE
-  ),
-};
+;
 
 const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
   'L', 'L', 'L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 
@@ -203,7 +196,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         is_shift_held = record->event.pressed;
         return true;
 
-    case LT(2, KC_ESCAPE):
+    case LT(3, KC_ESCAPE):
         if (record->tap.count > 0 && is_caps_word_on()) {
             if (!record->event.pressed) {
                 caps_word_off();
@@ -312,7 +305,7 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
 }
 
 // Key Overrides
-const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, LT(1,KC_BSPC), KC_DELETE);
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, LT(2,KC_BSPC), KC_DELETE);
 
 // Shift + esc = ~
 //const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, LT(2, KC_ESCAPE), A(DK_DIAE));
@@ -373,7 +366,7 @@ void caps_word_set_user(bool active) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef VOYAGER_USER_LEDS
-    layer_state_t tri_state = update_tri_layer_state(state, 1, 2, 3);
+    layer_state_t tri_state = update_tri_layer_state(state, 2, 3, 4);
     uint8_t layer = get_highest_layer(tri_state);
 
 //    STATUS_LED_1(layer & (1<<0));
