@@ -275,9 +275,7 @@ bool is_flow_tap_key(uint16_t keycode) {
 // Chordal Hold
 bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
                       uint16_t other_keycode, keyrecord_t* other_record) {
-  uint8_t layer = get_highest_layer(tri_state);
-
-  if (layer == LI_QWERTY) {
+  if (IS_LAYER_ON(LI_QWERTY)) {
 // When a modifier on the left hand side is active, settle all right hand modifiers as tapped
 // and vice versa.
     if (get_mods() != 0) {
