@@ -257,18 +257,45 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Flow Tap
 bool is_flow_tap_key(uint16_t keycode) {
-    switch (get_tap_keycode(keycode)) {
-        case KC_SPC:
-        case KC_A ... KC_Z:
-        case DK_AE:
-        case DK_OSTR: // ø
-        case DK_ARNG: // å
-        case DK_MINS: // This is minus and dash
-        case KC_DOT:
-        case KC_COMM:
-            return true;
+    if (IS_LAYER_ON(LI_QWERTY)) {
+        switch (get_tap_keycode(keycode)) {
+            case KC_A:
+            case KC_S:
+            case KC_D:
+            case KC_F:
+            case KC_J:
+            case KC_K:
+            case KC_L:
+            case DK_AE:
+                return true;
+        }
+    } else {
+        switch (get_tap_keycode(keycode)) {
+            case KC_A:
+            case KC_R:
+            case KC_S:
+            case KC_T:
+            case KC_N:
+            case KC_E:
+            case KC_I:
+            case KC_O:
+                return true;
+        }
     }
+
     return false;
+//    switch (get_tap_keycode(keycode)) {
+//        case KC_SPC:
+//        case KC_A ... KC_Z:
+//        case DK_AE:
+//        case DK_OSTR: // ø
+//        case DK_ARNG: // å
+//        case DK_MINS: // This is minus and dash
+//        case KC_DOT:
+//        case KC_COMM:
+//            return true;
+//    }
+//    return false;
 }
 
 
