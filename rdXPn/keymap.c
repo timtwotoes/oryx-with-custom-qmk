@@ -362,10 +362,10 @@ bool is_flow_tap_key(uint16_t keycode) {
 //    }
 //
 //  }
-
-  
-  return get_chordal_hold_default(tap_hold_record, other_record);
-}
+//
+//  
+//  return get_chordal_hold_default(tap_hold_record, other_record);
+//}
 
 // Key Overrides
 const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, LT(2,KC_BSPC), KC_DELETE);
