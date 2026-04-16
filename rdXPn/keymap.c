@@ -6,6 +6,10 @@
 #define ZSA_SAFE_RANGE SAFE_RANGE
 #endif
 
+#define LI_QWERTY 0
+#define LI_COLEMAK 1
+
+
 enum custom_keycodes {
   RGB_SLD = ZSA_SAFE_RANGE,
   HSV_0_255_255,
@@ -30,7 +34,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,         KC_Q,           KC_W,           KC_F,           KC_P,           KC_B,                                           KC_J,           KC_L,           KC_U,           KC_Y,           DK_AE,          DK_ARNG,        
     DK_PLUS,        MT(MOD_LGUI, KC_A),MT(MOD_LALT, KC_R),MT(MOD_LCTL, KC_S),MT(MOD_LSFT, KC_T),KC_G,                                           KC_M,           MT(MOD_RSFT, KC_N),MT(MOD_RCTL, KC_E),MT(MOD_RALT, KC_I),MT(MOD_RGUI, KC_O),DK_OSTR,        
     DK_LABK,        KC_Z,           KC_X,           KC_C,           KC_D,           KC_V,                                           KC_K,           KC_H,           KC_COMMA,       KC_DOT,         DK_MINS,        DK_QUOT,        
-                                                    KC_ENTER,       KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_SPACE
+                                                    KC_ENTER,       LT(2, KC_BSPC),                                 LT(3, KC_ESCAPE),KC_SPACE
   ),
   [2] = LAYOUT_voyager(
     KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_F6,                                          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         
@@ -65,6 +69,40 @@ const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
 
 
 
+#ifdef VOYAGER_USER_LEDS
+// Number of LEDs on the keyboard.
+#define NUM_LEDS  4
+// Period for LED_BLINK_FAST blinking. Smaller value implies faster.
+#define LED_BLINK_FAST_PERIOD_MS  300
+
+// Possible LED states.
+enum { LED_OFF = 0, LED_ON = 1, LED_BLINK_SLOW = 2, LED_BLINK_FAST = 3 };
+static uint8_t led_blink_state[NUM_LEDS] = {0};
+
+// Track caps lock
+static bool is_caps_lock_on = false;
+
+// Track shift
+static bool is_shift_held = false;
+
+static void update_caps_indicator(void) {
+    if (is_caps_lock_on) {
+        led_blink_state[3] = LED_ON;
+    } else if (is_caps_word_on()) {
+        led_blink_state[3] = LED_BLINK_FAST;
+    } else {
+        led_blink_state[3] = LED_OFF;
+    }
+}
+
+bool led_update_user(led_t led_state) {
+    is_caps_lock_on = led_state.caps_lock;
+    update_caps_indicator();
+    return true;
+}
+#endif
+
+
 
 extern rgb_config_t rgb_matrix_config;
 
@@ -76,6 +114,25 @@ RGB hsv_to_rgb_with_value(HSV hsv) {
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
+
+#ifdef VOYAGER_USER_LEDS
+  uint32_t led_blink_callback(uint32_t trigger_time, void* cb_arg) {
+    static const uint8_t pattern[4] = {0x00, 0xff, 0x0f, 0xaa};
+    static uint8_t phase = 0;
+    phase = (phase + 1) % 8;
+
+    uint8_t bit = 1 << phase;
+
+    STATUS_LED_1((pattern[led_blink_state[0]] & bit) != 0);
+    STATUS_LED_2((pattern[led_blink_state[1]] & bit) != 0);
+    STATUS_LED_3((pattern[led_blink_state[2]] & bit) != 0);
+    STATUS_LED_4((pattern[led_blink_state[3]] & bit) != 0);
+
+    return LED_BLINK_FAST_PERIOD_MS / 2;
+  }
+
+  defer_exec(1, led_blink_callback, NULL);
+#endif
 }
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
@@ -153,32 +210,175 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     }
     break;
-    case MAC_LOCK:
-      HCS(0x19E);
 
-    case RGB_SLD:
-      if (record->event.pressed) {
-        rgblight_mode(1);
+  case MT(MOD_LSFT, KC_F): 
+  case MT(MOD_RSFT, KC_J):
+    is_shift_held = record->event.pressed;
+    return true;
+
+   case LT(3, KC_ESCAPE):
+    if (record->tap.count > 0 && is_caps_word_on()) {
+      if (!record->event.pressed) {
+        caps_word_off();
       }
       return false;
-    case HSV_0_255_255:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(0,255,255);
+    }
+    return true;
+
+#ifdef USER_VOYAGER_LEDS
+   case LED_LEVEL:
+    if (record->event.pressed) {
+      keyboard_config.led_level ^= 1;
+      eeconfig_update_kb(keyboard_config.raw);
+      if (keyboard_config.led_level) {
+        layer_state_set_kb(layer_state);
+      } else {
+        led_blink_state[0] = LED_OFF;
+        led_blink_state[1] = LED_OFF;
+        led_blink_state[2] = LED_OFF;
+        led_blink_state[3] = LED_OFF;
       }
-      return false;
-    case HSV_74_255_255:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(74,255,255);
-      }
-      return false;
-    case HSV_169_255_255:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(169,255,255);
-      }
-      return false;
+    }
+    return true;
+#endif
+   case MAC_LOCK:
+    HCS(0x19E);
+
+   case RGB_SLD:
+    if (record->event.pressed) {
+      rgblight_mode(1);
+    }
+    return false;
+   case HSV_0_255_255:
+    if (record->event.pressed) {
+      rgblight_mode(1);
+      rgblight_sethsv(0,255,255);
+    }
+    return false;
+   case HSV_74_255_255:
+    if (record->event.pressed) {
+      rgblight_mode(1);
+      rgblight_sethsv(74,255,255);
+    }
+    return false;
+   case HSV_169_255_255:
+    if (record->event.pressed) {
+      rgblight_mode(1);
+      rgblight_sethsv(169,255,255);
+    }
+    return false;
   }
   return true;
+}
+
+
+// Flow Tap
+bool is_flow_tap_key(uint16_t keycode) {
+    if (IS_LAYER_ON(LI_QWERTY)) {
+        switch (get_tap_keycode(keycode)) {
+            case KC_A:
+            case KC_S:
+            case KC_D:
+            case KC_F:
+            case KC_J:
+            case KC_K:
+            case KC_L:
+            case DK_AE:
+                return true;
+        }
+    } else {
+        switch (get_tap_keycode(keycode)) {
+            case KC_A:
+            case KC_R:
+            case KC_S:
+            case KC_T:
+            case KC_N:
+            case KC_E:
+            case KC_I:
+            case KC_O:
+                return true;
+        }
+    }
+
+    return false;
+}
+
+
+// Key Overrides
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, LT(2,KC_BSPC), KC_DELETE);
+
+// Shift + esc = ~
+//const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, LT(2, KC_ESCAPE), A(DK_DIAE));
+
+// GUI + esc = `
+//const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, LT(2, KC_ESCAPE), S(DK_ACUT));
+
+// Ctrl + esc = ´
+//const key_override_t acute_esc_override = ko_make_basic(MOD_MASK_CTRL, LT(2, KC_ESCAPE), DK_ACUT);
+
+const key_override_t *key_overrides[] = {
+  &delete_key_override,
+//  &tilde_esc_override,
+//  &grave_esc_override,
+//  &acute_esc_override
+};
+
+
+bool caps_word_press_user(uint16_t keycode) {
+//  const bool shift_pressed = get_mods() & MOD_MASK_SHIFT;
+
+  switch (keycode) {  
+    // Keycodes that continue Caps Word
+    case KC_A ... KC_Z:
+    case DK_AE: // æ
+    case DK_OSTR: // ø
+    case DK_ARNG: // å
+    case DK_MINS: // This is minus and dash
+      add_weak_mods(MOD_BIT(KC_LSFT));
+      return true;
+
+    case KC_1 ... KC_0:
+      return is_shift_held == false;
+ //     return shift_pressed == false;
+
+    case KC_BSPC:
+    case KC_DEL:
+    case KC_RIGHT:
+    case KC_LEFT:
+    case KC_LSFT:
+    case KC_RSFT:
+      return true;
+
+    default:
+      return false;  // Deactivate Caps Word.
+  }
+}
+
+void caps_word_set_user(bool active) {
+#ifdef VOYAGER_USER_LEDS
+    update_caps_indicator();
+#endif
+   
+   if (active && host_keyboard_led_state().caps_lock) {
+      tap_code(KC_CAPS);
+   }
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+#ifdef VOYAGER_USER_LEDS
+    layer_state_t tri_state = update_tri_layer_state(state, 2, 3, 4);
+    uint8_t layer = get_highest_layer(tri_state);
+
+//    STATUS_LED_1(layer & (1<<0));
+//    STATUS_LED_2(layer & (1<<1));
+//    STATUS_LED_3(layer & (1<<2));
+//    led_blink_state[0] = (layer & (1<<0)) ? LED_ON : LED_OFF;
+    led_blink_state[1] = (layer & (1<<0)) ? LED_ON : LED_OFF;
+    led_blink_state[2] = (layer & (1<<1)) ? LED_ON : LED_OFF;
+#   if !defined(CAPS_LOCK_STATUS)
+//    STATUS_LED_4(layer & (1<<3));
+    update_caps_indicator();
+#   endif
+#endif
+    return tri_state;
 }
